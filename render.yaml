@@ -18,12 +18,11 @@ services:
           property: connectionString
     autoDeploy: true
 
+  - type: redis
+    name: ferreteria-redis
+    ipAllowList: [] # Only allow internal connections
+
 databases:
   - name: ferreteria-db
     databaseName: ferreteria
     user: admin
-
-services:
-  - type: redis
-    name: ferreteria-redis
-    ipAllowList: [] # Only allow internal connections
