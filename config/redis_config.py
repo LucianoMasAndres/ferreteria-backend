@@ -43,18 +43,32 @@ class RedisConfig:
         max_connections = int(os.getenv('REDIS_MAX_CONNECTIONS', '50'))
 
         try:
-            # Create connection pool
-            self._pool = ConnectionPool(
-                host=redis_host,
-                port=redis_port,
-                db=redis_db,
-                password=redis_password,
-                max_connections=max_connections,
-                decode_responses=True,  # Auto-decode bytes to str
-                socket_timeout=5,
-                socket_connect_timeout=5,
-                retry_on_timeout=True
-            )
+            # Check for REDIS_URL first (Render/Heroku style)
+            redis_url = os.getenv('REDIS_URL')
+            
+            if redis_url:
+                self._pool = ConnectionPool.from_url(
+                    redis_url,
+                    db=redis_db, # Override if needed, but usually in URL
+                    max_connections=max_connections,
+                    decode_responses=True,
+                    socket_timeout=5,
+                    socket_connect_timeout=5,
+                    retry_on_timeout=True
+                )
+            else:
+                # Create connection pool from components
+                self._pool = ConnectionPool(
+                    host=redis_host,
+                    port=redis_port,
+                    db=redis_db,
+                    password=redis_password,
+                    max_connections=max_connections,
+                    decode_responses=True,  # Auto-decode bytes to str
+                    socket_timeout=5,
+                    socket_connect_timeout=5,
+                    retry_on_timeout=True
+                )
 
             # Create Redis client
             self._client = redis.Redis(connection_pool=self._pool)
