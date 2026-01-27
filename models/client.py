@@ -10,6 +10,7 @@ class ClientModel(BaseModel):
     name = Column(String, index=True)
     lastname = Column(String, index=True)
     email = Column(String, unique=True, index=True)
+    password = Column(String) # Simple plaintext for demo (or hashed if desired, but keeping simple for now)
     telephone = Column(String)
 
     addresses = relationship("AddressModel", back_populates="client", cascade="all, delete-orphan", lazy="select")

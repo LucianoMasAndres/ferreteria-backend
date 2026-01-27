@@ -15,6 +15,7 @@ class ClientSchema(BaseSchema):
     name: Optional[str] = Field(None, min_length=1, max_length=100, description="Client's first name")
     lastname: Optional[str] = Field(None, min_length=1, max_length=100, description="Client's last name")
     email: Optional[EmailStr] = Field(None, description="Client's email address")
+    password: Optional[str] = Field(None, min_length=6, description="Client's password")
     telephone: Optional[str] = Field(
         None,
         min_length=7,
