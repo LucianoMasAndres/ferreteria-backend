@@ -95,4 +95,9 @@ class OrderService(BaseServiceImpl):
                 raise InstanceNotFoundError(f"Bill with id {schema.bill_id} not found")
 
         logger.info(f"Updating order {id_key}")
+        logger.info(f"Updating order {id_key}")
         return super().update(id_key, schema)
+
+    def get_by_client(self, client_id: int) -> list[OrderSchema]:
+        """Get all orders for a specific client."""
+        return self._repository.find_by_client(client_id)
