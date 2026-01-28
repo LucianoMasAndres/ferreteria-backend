@@ -30,6 +30,8 @@ from controllers.order_detail_controller import OrderDetailController
 from controllers.product_controller import ProductController
 from controllers.review_controller import ReviewController
 from controllers.health_check import router as health_check_controller
+from controllers.upload_controller import UploadController
+from config.cloudinary_config import setup_cloudinary
 from repositories.base_repository_impl import InstanceNotFoundError
 
 
@@ -82,6 +84,9 @@ def create_fastapi_app() -> FastAPI:
     category_controller = CategoryController()
     fastapi_app.include_router(category_controller.router, prefix="/categories")
 
+    upload_controller = UploadController()
+    fastapi_app.include_router(upload_controller.router, prefix="/uploads")
+
     fastapi_app.include_router(health_check_controller, prefix="/health_check")
 
     # Add middleware (LIFO order - last added runs first)
@@ -109,6 +114,9 @@ def create_fastapi_app() -> FastAPI:
     async def startup_event():
         """Run on application startup"""
         logger.info("🚀 Starting FastAPI E-commerce API...")
+        
+        # Setup Cloudinary
+        setup_cloudinary()
 
         # Check Redis connection
         if check_redis_connection():
