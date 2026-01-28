@@ -102,6 +102,37 @@ def seed():
                 print(f"Updated Product Image: {name}")
                 
         conn.commit()
+        conn.commit()
+
+        # 3. Create Admin User
+        admin_email = "admin@ferreteria.com"
+        result = conn.execute(text("SELECT id_key FROM clients WHERE email = :email"), {"email": admin_email})
+        row = result.fetchone()
+
+        if not row:
+            conn.execute(
+                text("""
+                    INSERT INTO clients (name, lastname, email, password, telephone) 
+                    VALUES (:name, :lastname, :email, :password, :telephone)
+                """),
+                {
+                    "name": "Admin",
+                    "lastname": "User",
+                    "email": admin_email,
+                    "password": "password123", # Plaintext as per controller logic
+                    "telephone": "12345678"
+                }
+            )
+            print(f"Created Admin User: {admin_email}")
+        else:
+            # Ensure password is correct
+            conn.execute(
+                text("UPDATE clients SET password = :password WHERE email = :email"),
+                {"password": "password123", "email": admin_email}
+            )
+            print(f"Admin User exists. Password reset to: password123")
+            
+        conn.commit()
         print("Seeding complete!")
 
 if __name__ == "__main__":
