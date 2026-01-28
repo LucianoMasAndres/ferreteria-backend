@@ -53,14 +53,21 @@ class CategoryService(BaseServiceImpl):
         logger.debug(f"Cache MISS: {cache_key}")
         categories_models = super().get_all(skip, limit)
 
-        # Convert to Pydantic models first
-        categories_schemas = [CategorySchema.model_validate(c) for c in categories_models]
+        try:
+            # Convert to Pydantic models first
+            categories_schemas = [CategorySchema.model_validate(c) for c in categories_models]
 
-        # Cache with longer TTL
-        categories_dict = [c.model_dump() for c in categories_schemas]
-        self.cache.set(cache_key, categories_dict, ttl=self.cache_ttl)
+            # Cache with longer TTL
+            categories_dict = [c.model_dump() for c in categories_schemas]
+            self.cache.set(cache_key, categories_dict, ttl=self.cache_ttl)
 
-        return categories_schemas
+            return categories_schemas
+            
+        except Exception as e:
+            logger.error(f"Failed to cache categories (fallback to direct DB): {e}")
+            if 'categories_schemas' in locals():
+                return categories_schemas
+            raise e
 
     def get_one(self, id_key: int) -> CategorySchema:
         """

@@ -53,14 +53,29 @@ class ProductService(BaseServiceImpl):
         logger.debug(f"Cache MISS: {cache_key}")
         products_models = super().get_all(skip, limit)
 
-        # Convert to Pydantic models first
-        products_schemas = [ProductSchema.model_validate(p) for p in products_models]
+        try:
+            # Convert to Pydantic models first
+            products_schemas = [ProductSchema.model_validate(p) for p in products_models]
 
-        # Cache the result (convert to dict for JSON serialization)
-        products_dict = [p.model_dump() for p in products_schemas]
-        self.cache.set(cache_key, products_dict)
-
-        return products_schemas
+            # Cache the result (convert to dict for JSON serialization)
+            products_dict = [p.model_dump() for p in products_schemas]
+            self.cache.set(cache_key, products_dict)
+            
+            return products_schemas
+            
+        except Exception as e:
+            logger.error(f"Failed to cache products (fallback to direct DB): {e}")
+            # Fallback: validation might have failed, but we still have models.
+            # Try to return basic dicts or just crash safely? 
+            # Ideally return the converted schemas if possible, or just re-raise if key data is corrupted.
+            # BUT, to prevent 500, we must return something valid. 
+            # If validation failed, then the DB data is invalid vs Schema. Correct behavior IS to crash or return empty.
+            # Let's try to return what we can.
+            if 'products_schemas' in locals():
+                return products_schemas
+            
+            # If validation failed, re-raise because we can't return invalid schema
+            raise e
 
     def get_one(self, id_key: int) -> ProductSchema:
         """
