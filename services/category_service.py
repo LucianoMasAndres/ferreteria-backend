@@ -49,14 +49,18 @@ class CategoryService(BaseServiceImpl):
             return [CategorySchema(**c) for c in cached_categories]
 
         # Cache miss
+        # Cache miss
         logger.debug(f"Cache MISS: {cache_key}")
-        categories = super().get_all(skip, limit)
+        categories_models = super().get_all(skip, limit)
+
+        # Convert to Pydantic models first
+        categories_schemas = [CategorySchema.model_validate(c) for c in categories_models]
 
         # Cache with longer TTL
-        categories_dict = [c.model_dump() for c in categories]
+        categories_dict = [c.model_dump() for c in categories_schemas]
         self.cache.set(cache_key, categories_dict, ttl=self.cache_ttl)
 
-        return categories
+        return categories_schemas
 
     def get_one(self, id_key: int) -> CategorySchema:
         """
@@ -73,11 +77,14 @@ class CategoryService(BaseServiceImpl):
             return CategorySchema(**cached_category)
 
         logger.debug(f"Cache MISS: {cache_key}")
-        category = super().get_one(id_key)
+        category_model = super().get_one(id_key)
 
-        self.cache.set(cache_key, category.model_dump(), ttl=self.cache_ttl)
+        # Convert to Pydantic model
+        category_schema = CategorySchema.model_validate(category_model)
 
-        return category
+        self.cache.set(cache_key, category_schema.model_dump(), ttl=self.cache_ttl)
+
+        return category_schema
 
     def save(self, schema: CategorySchema) -> CategorySchema:
         """Create new category and invalidate cache"""
