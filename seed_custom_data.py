@@ -3,8 +3,15 @@ from sqlalchemy import create_engine, text
 
 # Connection string
 # Connection string
-# Update based on docker network service name
-DATABASE_URL = "postgresql://postgres:postgres@ecommerce_postgres_dev:5432/postgres"
+import os
+
+# Connection string
+# Check for DATABASE_URL (Render) or fall back to local dev
+DATABASE_URL = os.getenv('DATABASE_URL', "postgresql://postgres:postgres@ecommerce_postgres_dev:5432/postgres")
+
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 engine = create_engine(DATABASE_URL)
 
 def seed():
