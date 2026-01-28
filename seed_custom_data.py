@@ -48,26 +48,26 @@ def seed():
         # 2. Create Products
         products = [
             # Manuales
-            ("Martillo de Carpintero", "Herramientas Manuales", 15.99, 50, "Martillo resistente de acero forjado con mango ergonómico.", "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=500&auto=format&fit=crop&q=60"),
-            ("Destornillador Phillips", "Herramientas Manuales", 5.50, 100, "Punta magnética y mango antideslizante.", "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&auto=format&fit=crop&q=60"),
-            ("Llave Inglesa Ajustable", "Herramientas Manuales", 12.00, 30, "Apertura máxima de 30mm, acero cromado.", "https://images.unsplash.com/photo-1566932769119-7a1fb6d7ce23?w=500&auto=format&fit=crop&q=60"),
+            ("Martillo de Carpintero", "Herramientas Manuales", 15.99, 50, "Martillo resistente de acero forjado con mango ergonómico.", "https://placehold.co/600x400/orange/white?text=Martillo+Carpintero"),
+            ("Destornillador Phillips", "Herramientas Manuales", 5.50, 100, "Punta magnética y mango antideslizante.", "https://placehold.co/600x400/orange/white?text=Destornillador+Phillips"),
+            ("Llave Inglesa Ajustable", "Herramientas Manuales", 12.00, 30, "Apertura máxima de 30mm, acero cromado.", "https://placehold.co/600x400/orange/white?text=Llave+Inglesa"),
             
             # Eléctricas
-            ("Taladro Percutor 500W", "Herramientas Eléctricas", 85.00, 20, "Potente taladro con función de percusión para concreto.", "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=500&auto=format&fit=crop&q=60"),
-            ("Sierra Circular", "Herramientas Eléctricas", 120.00, 15, "Cortes precisos en madera y metal ligero.", "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=500&auto=format&fit=crop&q=60"),
-            ("Lijadora Orbital", "Herramientas Eléctricas", 45.00, 25, "Acabados suaves, incluye bolsa recolectora de polvo.", "https://images.unsplash.com/photo-1610513320995-1ad4bbf25e55?w=500&auto=format&fit=crop&q=60"),
+            ("Taladro Percutor 500W", "Herramientas Eléctricas", 85.00, 20, "Potente taladro con función de percusión para concreto.", "https://placehold.co/600x400/333/orange?text=Taladro+Percutor"),
+            ("Sierra Circular", "Herramientas Eléctricas", 120.00, 15, "Cortes precisos en madera y metal ligero.", "https://placehold.co/600x400/333/orange?text=Sierra+Circular"),
+            ("Lijadora Orbital", "Herramientas Eléctricas", 45.00, 25, "Acabados suaves, incluye bolsa recolectora de polvo.", "https://placehold.co/600x400/333/orange?text=Lijadora+Orbital"),
             
             # Construcción
-            ("Saco de Cemento 50kg", "Construcción", 8.50, 200, "Cemento de alta resistencia para estructuras.", "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=500&auto=format&fit=crop&q=60"),
-            ("Ladrillo Rojo Estándar", "Construcción", 0.45, 5000, "Ladrillo cocido para muros resistentes.", "https://images.unsplash.com/photo-1585806651280-9755b4526058?w=500&auto=format&fit=crop&q=60"),
+            ("Saco de Cemento 50kg", "Construcción", 8.50, 200, "Cemento de alta resistencia para estructuras.", "https://placehold.co/600x400/grey/white?text=Cemento+50kg"),
+            ("Ladrillo Rojo Estándar", "Construcción", 0.45, 5000, "Ladrillo cocido para muros resistentes.", "https://placehold.co/600x400/red/white?text=Ladrillo+Rojo"),
             
             # Seguridad
-            ("Casco de Seguridad", "Seguridad", 14.50, 60, "Protección certificada color amarillo.", "https://images.unsplash.com/photo-1582234057635-f483758b6883?w=500&auto=format&fit=crop&q=60"),
-            ("Guantes de Trabajo", "Seguridad", 3.99, 150, "Reforzados con cuero para manejo de cargas.", "https://images.unsplash.com/photo-1581553631626-d62f0254cfc0?w=500&auto=format&fit=crop&q=60"),
+            ("Casco de Seguridad", "Seguridad", 14.50, 60, "Protección certificada color amarillo.", "https://placehold.co/600x400/yellow/black?text=Casco+Seguridad"),
+            ("Guantes de Trabajo", "Seguridad", 3.99, 150, "Reforzados con cuero para manejo de cargas.", "https://placehold.co/600x400/brown/white?text=Guantes+Trabajo"),
             
             # Plomería
-            ("Tubo PVC 3m", "Plomería", 7.00, 100, "Tubo de media pulgada para agua potable.", "https://images.unsplash.com/photo-1605663864774-748f5f858a08?w=500&auto=format&fit=crop&q=60"),
-            ("Llave de Paso", "Plomería", 9.25, 40, "Bronce fundido, cierre esférico.", "https://images.unsplash.com/photo-1584646739833-255474345b5e?w=500&auto=format&fit=crop&q=60")
+            ("Tubo PVC 3m", "Plomería", 7.00, 100, "Tubo de media pulgada para agua potable.", "https://placehold.co/600x400/blue/white?text=Tubo+PVC"),
+            ("Llave de Paso", "Plomería", 9.25, 40, "Bronce fundido, cierre esférico.", "https://placehold.co/600x400/gold/black?text=Llave+de+Paso")
         ]
 
         for name, cat_name, price, stock, desc, img in products:
