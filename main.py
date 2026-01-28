@@ -95,15 +95,26 @@ def create_fastapi_app() -> FastAPI:
     logger.info("✅ Request ID middleware enabled (distributed tracing)")
 
     # CORS Configuration
-    # Allow Vercel frontend explicitly to avoid CORS issues with credentials/wildcards
-    default_origins = [
+    # Always include Vercel frontend explicitly, regardless of ENV vars
+    env_origins = os.getenv("CORS_ORIGINS", "").split(",")
+    valid_origins = [origin.strip() for origin in env_origins if origin.strip()]
+    
+    # Force default origins
+    forced_origins = [
         "http://localhost:5173",
         "https://ferreteria-frontend-gold.vercel.app"
     ]
-    cors_origins = os.getenv("CORS_ORIGINS", ",".join(default_origins)).split(",")
+    
+    # Combine and deduplicate
+    cors_origins = list(set(valid_origins + forced_origins))
+    
+    # Remove wildcard if credentials are true (it breaks browser security)
+    if "*" in cors_origins:
+        cors_origins.remove("*")
+
     fastapi_app.add_middleware(
         CORSMiddleware,
-        allow_origins=cors_origins if cors_origins != ["*"] else ["*"],
+        allow_origins=cors_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
