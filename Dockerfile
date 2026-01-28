@@ -53,4 +53,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 EXPOSE 8000
 
 # Run main.py when the container launches
-CMD ["python", "-m", "main"]
+# Run seed script then main.py
+CMD sh -c "python seed_custom_data.py && python -m main"
