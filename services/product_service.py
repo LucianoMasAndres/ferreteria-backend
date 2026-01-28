@@ -49,14 +49,18 @@ class ProductService(BaseServiceImpl):
             return [ProductSchema(**p) for p in cached_products]
 
         # Cache miss - get from database
+        # Cache miss - get from database
         logger.debug(f"Cache MISS: {cache_key}")
-        products = super().get_all(skip, limit)
+        products_models = super().get_all(skip, limit)
+
+        # Convert to Pydantic models first
+        products_schemas = [ProductSchema.model_validate(p) for p in products_models]
 
         # Cache the result (convert to dict for JSON serialization)
-        products_dict = [p.model_dump() for p in products]
+        products_dict = [p.model_dump() for p in products_schemas]
         self.cache.set(cache_key, products_dict)
 
-        return products
+        return products_schemas
 
     def get_one(self, id_key: int) -> ProductSchema:
         """
@@ -75,12 +79,15 @@ class ProductService(BaseServiceImpl):
 
         # Get from database
         logger.debug(f"Cache MISS: {cache_key}")
-        product = super().get_one(id_key)
+        product_model = super().get_one(id_key)
+
+        # Convert to Pydantic model
+        product_schema = ProductSchema.model_validate(product_model)
 
         # Cache the result
-        self.cache.set(cache_key, product.model_dump())
+        self.cache.set(cache_key, product_schema.model_dump())
 
-        return product
+        return product_schema
 
     def save(self, schema: ProductSchema) -> ProductSchema:
         """
