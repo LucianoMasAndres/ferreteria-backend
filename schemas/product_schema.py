@@ -19,7 +19,8 @@ class ProductSchema(BaseSchema):
     image_url: Optional[str] = Field(None, description="Product image URL")
 
     category_id: int = Field(..., description="Category ID reference (required)")
-
-    category: Optional['CategorySchema'] = None
-    reviews: Optional[List['ReviewSchema']] = []
-    order_details: Optional[List['OrderDetailSchema']] = []
+    
+    # Nested fields causing potential resolution errors or recursion loops during simple listing
+    # category: Optional['CategorySchema'] = None
+    # reviews: Optional[List['ReviewSchema']] = []
+    # order_details: Optional[List['OrderDetailSchema']] = []
